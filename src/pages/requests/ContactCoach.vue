@@ -1,25 +1,27 @@
 <template>
-  <form @submit.prevent="submitForm">
-    <div class="form-control">
-      <label for="email">Jouw E-Mail</label>
-      <input type="email" name="email" id="email" v-model.trim="email" />
-    </div>
-    <div class="form-control">
-      <label for="message">Bericht</label>
-      <textarea
-        name="message"
-        id="message"
-        rows="5"
-        v-model.trim="message"
-      ></textarea>
-    </div>
-    <p v-if="!formIsValid" class="errors">
-      E-mailadres en bericht zijn verplicht.
-    </p>
-    <div class="actions">
-      <base-button>Verzenden</base-button>
-    </div>
-  </form>
+  <div>
+    <form @submit.prevent="submitForm">
+      <div class="form-control">
+        <label for="email">Jouw E-Mail</label>
+        <input type="email" name="email" id="email" v-model.trim="email" />
+      </div>
+      <div class="form-control">
+        <label for="message">Bericht</label>
+        <textarea
+          name="message"
+          id="message"
+          rows="5"
+          v-model.trim="message"
+        ></textarea>
+      </div>
+      <p v-if="!formIsValid" class="errors">
+        E-mailadres en bericht zijn verplicht.
+      </p>
+      <div class="actions">
+        <base-button>Verzenden</base-button>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
