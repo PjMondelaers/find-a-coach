@@ -2,22 +2,24 @@
   <section>FILTER</section>
 
   <section>
-    <div class="controls">
-      <button>Vernieuwen</button>
-      <router-link to="/register">Registreer als Coach</router-link>
-    </div>
-    <ul v-if="hasCoaches">
-      <coach-item
-        v-for="coach in filteredCoaches"
-        :key="coach.id"
-        :id="coach.id"
-        :first-name="coach.firstName"
-        :last-name="coach.lastName"
-        :rate="coach.hourlyRate"
-        :areas="coach.areas"
-      ></coach-item>
-    </ul>
-    <h3 v-else>Geen coaches gevonden</h3>
+    <base-card>
+      <div class="controls">
+        <base-button mode="outline">Vernieuwen</base-button>
+        <base-button to="/register" link>Registreer als Coach</base-button>
+      </div>
+      <ul v-if="hasCoaches">
+        <coach-item
+          v-for="coach in filteredCoaches"
+          :key="coach.id"
+          :id="coach.id"
+          :first-name="coach.firstName"
+          :last-name="coach.lastName"
+          :rate="coach.hourlyRate"
+          :areas="coach.areas"
+        ></coach-item>
+      </ul>
+      <h3 v-else>Geen coaches gevonden</h3>
+    </base-card>
   </section>
 </template>
 
