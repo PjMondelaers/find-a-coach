@@ -36,7 +36,8 @@ export default {
     const responseData = await response.json();
 
     if (!response.ok) {
-      // error handling
+      const error = new Error(responseData.message || "Data ophalen mislukt!");
+      throw error;
     }
 
     const coaches = [];
