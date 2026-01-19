@@ -10,7 +10,7 @@ export default {
 
   computed: {
     text() {
-      return this.title.toUpperCase();
+      return this.title ? this.title.toUpperCase() : "";
     },
   },
 };
