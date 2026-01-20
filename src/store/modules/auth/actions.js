@@ -16,7 +16,9 @@ export default {
 
     if (!response.ok) {
       console.log(responseData);
-      const error = new Error(responseData.error || "Kon niet authenticeren");
+      const error = new Error(
+        "Registratie mislukt. Probeer het later opnieuw.",
+      );
       throw error;
     }
 

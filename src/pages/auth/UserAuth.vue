@@ -1,29 +1,41 @@
 <template>
-  <base-card>
-    <form @submit.prevent="submitForm">
-      <div class="form-control">
-        <label for="email">E-mailadres</label>
-        <input type="email" name="email" id="email" v-model.trim="email" />
-      </div>
+  <div>
+    <base-dialog
+      :show="!!error"
+      title="Er is een fout opgetreden"
+      @close="handleError"
+    >
+      <p>{{ error }}</p>
+    </base-dialog>
+    <base-dialog fixed :show="isLoading" title="Bezig met anmelden..">
+      <base-spinner></base-spinner>
+    </base-dialog>
+    <base-card>
+      <form @submit.prevent="submitForm">
+        <div class="form-control">
+          <label for="email">E-mailadres</label>
+          <input type="email" name="email" id="email" v-model.trim="email" />
+        </div>
 
-      <div class="form-control">
-        <label for="password">Wachtwoord</label>
-        <input
-          type="password"
-          name="password"
-          id="password"
-          v-model.trim="password"
-        />
-      </div>
-      <p v-if="!formIsValid">
-        Foutieve combinatie van e-mailadres en wachtwoord.
-      </p>
-      <base-button> {{ submitButtonCaption }}</base-button>
-      <base-button type="button" mode="flat" @click="switchAuthMode">{{
-        switchModeButtonCaption
-      }}</base-button>
-    </form>
-  </base-card>
+        <div class="form-control">
+          <label for="password">Wachtwoord</label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            v-model.trim="password"
+          />
+        </div>
+        <p v-if="!formIsValid">
+          Foutieve combinatie van e-mailadres en wachtwoord.
+        </p>
+        <base-button> {{ submitButtonCaption }}</base-button>
+        <base-button type="button" mode="flat" @click="switchAuthMode">{{
+          switchModeButtonCaption
+        }}</base-button>
+      </form>
+    </base-card>
+  </div>
 </template>
 
 <script>
@@ -34,6 +46,8 @@ export default {
       password: "",
       formIsValid: true,
       mode: "login",
+      isLoading: false,
+      error: null,
     };
   },
 
@@ -56,7 +70,7 @@ export default {
   },
 
   methods: {
-    submitForm() {
+    async submitForm() {
       this.formIsValid = true;
 
       if (
@@ -68,14 +82,23 @@ export default {
         return;
       }
 
-      if (this.mode === "login") {
-        // need to handle
-      } else {
-        this.$store.dispatch("signup", {
-          email: this.email,
-          password: this.password,
-        });
+      this.isLoading = true;
+
+      try {
+        if (this.mode === "login") {
+          // need to handle
+        } else {
+          await this.$store.dispatch("signup", {
+            email: this.email,
+            password: this.password,
+          });
+        }
+      } catch (error) {
+        this.error =
+          error.message || "Authenticatie mislukt. Probeer het laten opnieuw.";
       }
+
+      this.isLoading = false;
     },
     switchAuthMode() {
       if (this.mode === "login") {
@@ -83,6 +106,9 @@ export default {
       } else {
         this.mode = "login";
       }
+    },
+    handleError() {
+      this.error = null;
     },
   },
 };
